@@ -1,5 +1,5 @@
 const whitelist = ["http://localhost:3000", "http://localhost:3500"];
-const corsHandler = {
+const corsConfig = {
 	origin: (origin, callback) => {
 		if (whitelist.indexOf(origin) !== -1 || !origin) {
 			callback(null, true);
@@ -10,4 +10,4 @@ const corsHandler = {
 	optionsSuccesStatus: 200,
 };
 
-module.exports = corsHandler;
+module.exports = corsConfig;

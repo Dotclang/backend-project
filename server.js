@@ -5,7 +5,7 @@ const cors = require("cors");
 
 require("dotenv").config();
 
-const corsHandler = require("./config/corsHandler");
+const corsConfig = require("./config/corsConfig");
 const reqHandler = require("./middleware/reqHandler");
 const errHandler = require("./middleware/errHandler");
 
@@ -15,7 +15,10 @@ const PORT = process.env.PORT || 3500;
 app.use(reqHandler);
 
 //CORS ORIGIN RESOURCE SHARING
-app.use(cors(corsHandler));
+app.use(cors(corsConfig));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // PUBLIC ASSET
 app.use("/", express.static(path.join(__dirname, "public")));
