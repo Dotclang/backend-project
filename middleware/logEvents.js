@@ -5,27 +5,25 @@ const fs = require("fs");
 const fsPromises = require("fs");
 const path = require("path");
 
-const logEvents = async (msg, logName, next) => {
+const logEvents = async (msg, logName) => {
 	const dateTime = `${format(new Date(), "yyyyMMdd\tHH:mm:ss")}`;
 	const logItem = `${dateTime}\t${uuid()}\t${msg}\n`;
+	const logFolder = path.join(
+		__dirname,
+		"..",
+		"logs",
+		`${format(new Date(), "yyyyMM")}`
+	);
 
 	try {
-		if (
-			!fs.existsSync(
-				path.join(__dirname, "..", "logs", `${format(new Date(), "yyyyMM")}`)
-			)
-		) {
-			await fsPromises.mkdirSync(
-				path.join(__dirname, "..", "logs", `${format(new Date(), "yyyyMM")}`),
-				{ recursive: true },
-				(err) => {
-					if (err)
-						console.error("New error create folder logs date message", {
-							cause: err.message,
-							stack: "\n" + err.stack,
-						});
-				}
-			);
+		if (!fs.existsSync(logFolder)) {
+			await fsPromises.mkdirSync(logFolder, { recursive: true }, (err) => {
+				if (err)
+					console.error("New error create folder logs date message", {
+						cause: err.message,
+						stack: "\n" + err.stack,
+					});
+			});
 		}
 		await fsPromises.appendFile(
 			path.join(
