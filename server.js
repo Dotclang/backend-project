@@ -6,13 +6,18 @@ const cors = require("cors");
 require("dotenv").config();
 
 const corsHandler = require("./config/corsHandler");
+const reqHandler = require("./middleware/reqHandler");
+const errHandler = require("./middleware/errHandler");
 
 const PORT = process.env.PORT || 3500;
 
-//CORS
+// REQ LOG HANDLER
+app.use(reqHandler);
+
+//CORS ORIGIN RESOURCE SHARING
 app.use(cors(corsHandler));
 
-// ASSET
+// PUBLIC ASSET
 app.use("/", express.static(path.join(__dirname, "public")));
 
 // ROUTES
@@ -28,6 +33,9 @@ app.all("*", (req, res, next) => {
 		res.type("txt").send("404 Not Found");
 	}
 });
+
+// ERR LOG HANDLER
+app.use(errHandler);
 
 app.listen(PORT, () => {
 	console.log(`Server running on http://localhost:${PORT}`);
